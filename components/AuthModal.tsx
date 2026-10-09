@@ -146,6 +146,22 @@ export const AuthModal: React.FC = () => {
               const mockToken = `okx_sec_tok_${Math.random().toString(36).substring(2)}_${Date.now()}`;
               localStorage.setItem('okxflix_session_token', mockToken);
 
+              try {
+                const isOwner = pendingProfile?.email === 'richardshannon901@gmail.com' || pendingProfile?.role === 'owner';
+                fetch('/api/auth/security-alert', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    email: pendingProfile?.email,
+                    accountType: isOwner ? 'Owner' : 'User',
+                    eventType: pendingIsSignup ? 'New Account Registration' : 'Successful Login',
+                    device: typeof window !== 'undefined' ? navigator.userAgent : 'Desktop Browser'
+                  })
+                }).catch(e => console.error('Failed to report security alert:', e));
+              } catch (e) {
+                console.error('Failed to report security alert:', e);
+              }
+
               if (pendingIsSignup) {
                 const registeredStr = localStorage.getItem('okxflix_registered_users');
                 const registeredUsers = registeredStr ? JSON.parse(registeredStr) : {};

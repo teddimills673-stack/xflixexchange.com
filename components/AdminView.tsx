@@ -50,11 +50,23 @@ export const AdminView: React.FC = () => {
   const [btcSaved, setBtcSaved] = useState<boolean>(false);
 
   const [nowTime, setNowTime] = useState<number>(() => Date.now());
+  const [liveAlerts, setLiveAlerts] = useState<any[]>([]);
 
   React.useEffect(() => {
     const timer = setInterval(() => setNowTime(Date.now()), 10000);
     return () => clearInterval(timer);
   }, []);
+
+  React.useEffect(() => {
+    if (activeTab === 'alerts') {
+      fetch('/api/auth/security-alert')
+        .then(res => res.json())
+        .then(data => {
+          if (data.alerts) setLiveAlerts(data.alerts);
+        })
+        .catch(err => console.error(err));
+    }
+  }, [activeTab]);
 
   // Check if re-authentication is required (20 minutes = 1,200,000 ms)
   const isReauthExpired = !adminLastVerifiedAt || (nowTime - adminLastVerifiedAt > 1200000);
@@ -658,31 +670,70 @@ export const AdminView: React.FC = () => {
       {activeTab === 'alerts' && (
         <div className="space-y-6">
           <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-4">
-            <h3 className="text-lg font-bold text-white">Security Alerts</h3>
-            <p className="text-xs text-slate-400">Automated warning notices regarding unrecognized devices, IP shifts, and remote session terminations.</p>
-
-            <div className="space-y-3">
-              <div className="bg-amber-500/10 border border-amber-500/20 rounded-2xl p-4 flex items-start gap-3">
-                <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
-                <div>
-                  <h4 className="text-xs font-bold text-amber-300 uppercase tracking-wide">⚠️ New Device Signed Into Administrator Account</h4>
-                  <p className="text-xs text-slate-300 mt-1">
-                    <strong>Windows Desktop Workstation</strong> logged in from New York, USA. If this was not initiated by you, please revoke session immediately.
-                  </p>
-                  <p className="text-[10px] text-slate-400 font-mono mt-2">August 30, 2026 — 18:21 UTC</p>
-                </div>
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-lg font-bold text-white">🔐 OKX FLIX — Account Security Alerts</h3>
+                <p className="text-xs text-slate-400 mt-1">Real-time operator monitoring of successful account sign-ins and new user registrations.</p>
               </div>
+              <button
+                onClick={async () => {
+                  try {
+                    const res = await fetch('/api/auth/security-alert');
+                    const data = await res.json();
+                    if (data.alerts) setLiveAlerts(data.alerts);
+                  } catch (e) {}
+                }}
+                className="bg-blue-600/20 hover:bg-blue-600 text-blue-400 hover:text-white px-3 py-1.5 rounded-xl text-xs font-semibold transition-colors flex items-center gap-1.5"
+              >
+                <RefreshCw className="w-3.5 h-3.5" />
+                <span>Refresh Feed</span>
+              </button>
+            </div>
 
-              <div className="bg-blue-500/10 border border-blue-500/20 rounded-2xl p-4 flex items-start gap-3">
-                <Info className="w-5 h-5 text-blue-400 shrink-0 mt-0.5" />
-                <div>
-                  <h4 className="text-xs font-bold text-blue-300 uppercase tracking-wide">🔒 Routine Cryptographic Rotation Completed</h4>
-                  <p className="text-xs text-slate-300 mt-1">
-                    Administrator session tokens successfully re-hashed and rotated according to institutional security protocol.
-                  </p>
-                  <p className="text-[10px] text-slate-400 font-mono mt-2">August 31, 2026 — 00:00 UTC</p>
-                </div>
-              </div>
+            <div className="overflow-x-auto pt-2">
+              <table className="w-full text-left text-xs">
+                <thead className="bg-slate-950 text-slate-400 uppercase font-mono text-[10px] border-b border-slate-800">
+                  <tr>
+                    <th className="p-3.5">Event</th>
+                    <th className="p-3.5">Account (Masked)</th>
+                    <th className="p-3.5">Type</th>
+                    <th className="p-3.5">Device & Environment</th>
+                    <th className="p-3.5">Timestamp (UTC)</th>
+                    <th className="p-3.5">Status</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-800/60 font-medium">
+                  {liveAlerts.length === 0 ? (
+                    <tr>
+                      <td colSpan={6} className="py-8 text-center text-slate-500 font-mono">No recent login or registration alerts recorded yet.</td>
+                    </tr>
+                  ) : (
+                    liveAlerts.map((alert: any) => (
+                      <tr key={alert.id} className="hover:bg-slate-950/40 transition-colors">
+                        <td className="p-3.5 font-bold text-white flex items-center gap-2">
+                          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                          {alert.eventType}
+                        </td>
+                        <td className="p-3.5 font-mono text-blue-400">{alert.maskedEmail}</td>
+                        <td className="p-3.5">
+                          <span className={`text-[10px] px-2 py-0.5 rounded font-mono font-bold ${
+                            alert.accountType === 'Owner' ? 'bg-amber-500/15 text-amber-400 border border-amber-500/30' : 'bg-blue-500/15 text-blue-400 border border-blue-500/30'
+                          }`}>
+                            {alert.accountType}
+                          </span>
+                        </td>
+                        <td className="p-3.5 text-slate-300 font-mono text-[11px]">{alert.device}</td>
+                        <td className="p-3.5 text-slate-400 font-mono text-[11px]">{alert.dateFormatted}</td>
+                        <td className="p-3.5">
+                          <span className="text-[10px] px-2.5 py-0.5 rounded-full font-mono font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                            {alert.status}
+                          </span>
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
