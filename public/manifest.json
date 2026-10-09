@@ -1,0 +1,21 @@
+{
+  "name": "OKX FLIX Cryptocurrency Exchange",
+  "short_name": "OKX FLIX",
+  "description": "Professional digital-asset cryptocurrency trading platform providing spot trading, margin trading, secure multi-asset wallet, and market analytics.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b0f19",
+  "theme_color": "#0b0f19",
+  "icons": [
+    {
+      "src": "/home-icon.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "/home-icon.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}

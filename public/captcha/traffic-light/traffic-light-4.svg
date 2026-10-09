@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="100%" height="100%">
+  <rect width="600" height="600" fill="#64748b"/>
+  <rect x="275" y="0" width="50" height="600" fill="#1e293b"/>
+  <g transform="translate(240, 100)">
+    <rect x="0" y="0" width="120" height="320" rx="20" fill="#0f172a" stroke="#475569" stroke-width="6"/>
+    <!-- Red Active -->
+    <circle cx="60" cy="65" r="30" fill="#ef4444"/>
+    <!-- Yellow Off -->
+    <circle cx="60" cy="160" r="30" fill="#475569"/>
+    <!-- Green Off -->
+    <circle cx="60" cy="255" r="30" fill="#475569"/>
+  </g>
+</svg>

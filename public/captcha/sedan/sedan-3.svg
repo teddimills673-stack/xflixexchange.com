@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="100%" height="100%">
+  <rect width="600" height="260" fill="#0f172a"/>
+  <rect y="260" width="600" height="340" fill="#334155"/>
+  <!-- Highway asphalt -->
+  <polygon points="120,260 480,260 600,600 0,600" fill="#1e293b"/>
+  <polygon points="290,260 310,260 330,600 270,600" fill="#cbd5e1"/>
+  <!-- Dark Sedan -->
+  <g transform="translate(150, 330) scale(0.6)">
+    <path d="M50 200 Q80 130 150 120 L250 120 Q320 130 350 200 L370 240 L30 240 Z" fill="#090d16"/>
+    <path d="M140 120 L175 80 L235 80 L270 120 Z" fill="#1e293b"/>
+    <circle cx="100" cy="240" r="40" fill="#000"/>
+    <circle cx="300" cy="240" r="40" fill="#000"/>
+    <circle cx="100" cy="240" r="20" fill="#64748b"/>
+    <circle cx="300" cy="240" r="20" fill="#64748b"/>
+  </g>
+</svg>

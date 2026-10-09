@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="100%" height="100%">
+  <!-- Sidewalk & Building background -->
+  <rect width="600" height="400" fill="#64748b"/>
+  <rect y="400" width="600" height="200" fill="#334155"/>
+  <!-- Concrete curb -->
+  <rect y="370" width="600" height="30" fill="#94a3b8"/>
+  <!-- Fire Hydrant in Foreground -->
+  <g transform="translate(240, 220)">
+    <!-- Base -->
+    <rect x="30" y="300" width="60" height="40" rx="8" fill="#b91c1c"/>
+    <rect x="20" y="320" width="80" height="20" rx="4" fill="#991b1b"/>
+    <!-- Main Body -->
+    <rect x="35" y="160" width="50" height="140" rx="10" fill="#dc2626"/>
+    <!-- Side Nozzles -->
+    <rect x="5" y="190" width="35" height="25" rx="6" fill="#b91c1c"/>
+    <circle cx="5" cy="202" r="10" fill="#f8fafc"/>
+    <rect x="80" y="190" width="35" height="25" rx="6" fill="#b91c1c"/>
+    <circle cx="115" cy="202" r="10" fill="#f8fafc"/>
+    <!-- Center Nozzle -->
+    <rect x="25" y="130" width="70" height="35" rx="8" fill="#dc2626"/>
+    <circle cx="60" cy="147" r="14" fill="#f8fafc"/>
+    <!-- Top Cap -->
+    <path d="M25 130 L60 90 L95 130 Z" fill="#b91c1c"/>
+    <circle cx="60" cy="90" r="12" fill="#f8fafc"/>
+  </g>
+</svg>
